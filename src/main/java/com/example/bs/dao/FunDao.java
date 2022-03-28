@@ -21,9 +21,9 @@ public interface FunDao {
 
     Fun findById();
 
-    @Update("update t_fun set fname=#{fnema},ftype=#{ftype},furl=#{furl},auth_flag=#{auth_flag},pid=#{pid},pname=#{pname},update_uid=#{update_uid},update_time=now()" )
-    void update();
+    @Update("update t_fun set fname=#{fnema},ftype=#{ftype},furl=#{furl},auth_flag=#{auth_flag},pid=#{pid},pname=#{pname},update_uid=#{update_uid},update_time=now() where fid=#{fid}" )
+    void update(Fun fun);
 
-    @Update("update t_fun set update_uid=#{update_uid},update_time=now(),delete_flag=0")
-    void delete();
+    @Update("update t_fun set update_uid=#{update_uid},update_time=now(),delete_flag=0 where fid=#{fid}")
+    void delete(Fun fun);
 }
