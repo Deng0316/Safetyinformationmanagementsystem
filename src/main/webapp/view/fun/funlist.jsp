@@ -37,7 +37,7 @@
         <i class="layui-icon">&#xe642;</i>    编辑
     </button>
 
-    <button onclick="" class="layui-btn layui-btn-primary layui-border-red  layui-btn-sm">
+    <button class="layui-btn layui-btn-primary layui-border-red  layui-btn-sm" lay-event="toDelete">
         <i class="layui-icon">&#xe640;</i>    删除
     </button>
 
@@ -98,8 +98,6 @@
         $('#foldBtn').click(function(){
             tt.foldAll();
         });
-
-
     });
     layui.use(['treeTable'],function (){
         var treeTable = layui.treeTable;
@@ -107,6 +105,7 @@
             switch (obj.event){
                 case "toAddChild":openAddView(obj.data.fid,obj.data.fname,obj.data.pauth);break;
                 case "toEdit":toEdit(obj.data.fid);break;
+                case "toDelete":toDelete(obj.data);break;
             }
         })
         treeTable.on('toolbar(treeList)',function (obj){
@@ -175,7 +174,7 @@
                             form.on('submit(1)',function(data){
                                 //data.field装载了表单中的组件数据，可以参考文档
                                 //自定义ajax异步请求
-                                $.post('fun/update', {fid:fid},function(responseVO){
+                                $.post('fun/update',data,function(responseVO){
                                     var code = responseVO.code ;
                                     var msg = responseVO.msg ;
                                     if(code == 0){
@@ -197,6 +196,42 @@
                 }
             })
         })
+    }
+
+    function toDelete(data){
+        layui.use(['layer','jquery','form', 'treeTable'],function (){
+            var layer = layui.layer;
+            var $ = layui.$ ;
+            var treeTable = layui.treeTable ;
+            layer.confirm('是否确认删除',{icon:3},function (){
+                if(data.children){
+                    layer.alert('不能直接删除含有子事项的父级事项',{icon:2});
+                    return
+                }
+                data = {
+                    fid: data.fid
+                }
+                console.log(data)
+                $.ajax({
+                    type:'post',
+                    async: true,
+                    data: data,
+                    url:"fun/delete",
+                    success:function (responseVO){
+                        var code = responseVO.code ;
+                        var msg = responseVO.msg ;
+                        if(code == 1){
+                            layer.alert(msg,{icon:6},function(){
+                                //点击提示框的确定按钮
+                                layer.closeAll();
+                                treeTable.reload('treeList');
+                            })
+                        }
+                    }
+                })
+            })
+        })
+
     }
 
     function openAddView(pid,pname,pauth){

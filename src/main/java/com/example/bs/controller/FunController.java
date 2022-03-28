@@ -52,4 +52,26 @@ public class FunController {
         Fun funs = funService.edit(fid);
         return funs;
     }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public responseVO update(Fun fun,HttpSession session){
+        User loginUser = (User) session.getAttribute("loginUser");
+        fun.setUpdate_uid(loginUser.getUid());
+        String result = funService.update(fun);
+        if(StringUtil.isEmpty(result)){
+            return new responseVO(1,"修改失败");
+        }else {
+            return new responseVO(0,"修改成功");
+        }
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public responseVO delete( Fun fun, HttpSession session){
+        User loginUser = (User) session.getAttribute("loginUser");
+        fun.setUpdate_uid(loginUser.getUid());
+        funService.delete(fun);
+        return new responseVO(1,"删除成功");
+    }
 }

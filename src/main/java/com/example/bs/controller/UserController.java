@@ -93,7 +93,7 @@ public class UserController {
         PageVo vo = userService.list(param);
 
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/view/user/list.jsp");
+        mv.setViewName("/view/user/userlist.jsp");
         mv.addObject("vo",vo);
         return mv;
     }
