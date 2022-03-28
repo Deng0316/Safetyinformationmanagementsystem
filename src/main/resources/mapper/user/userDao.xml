@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bs.dao.UserDao">
+<!--分页查询-->
+    <sql id="UserInfoColumns">
+        u.uid,u.uname,u.upass,u.zjm,u.phone,u.mail,u.truename,u.sex,u.age,u.create_time,u.create_uid,u.update_time,
+        u.update_uid,u.delete_flag,u.yl1,u.yl2,u.yl3,u.yl4,
+    </sql>
+    <sql id="pageFromAndWhere">
+        FROM t_user u
+        <where>
+            u.delete_flag='1'
+            <if test="uname != null and uname != ''">
+                 AND u.uname like CONCAT(#{uname},'%') or u.zjm like CONCAT(#{uname},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                 AND u.phone like CONCAT(#{phone},'%')
+            </if>
+        </where>
+    </sql>
+    <sql id="column">
+        ifnull((select uname from t_user where uid=u.create_uid),'系统管理员')
+            as create_uname,
+            ifnull((select uname from t_user where uid=u.update_uid),'')
+            as update_uname
+    </sql>
+
+    <select id="listTotal" resultType="java.lang.Long">
+        select count(*)
+        <include refid="pageFromAndWhere"/>
+    </select>
+
+    <select id="list" resultType="com.example.bs.entity.User">
+        select
+        <include refid="UserInfoColumns"></include>
+        <include refid="column"></include>
+        <include refid="pageFromAndWhere"/>
+        <choose>
+            <when test="update_time != null and update_time != ''">
+                 ORDER BY update_time DESC
+            </when>
+            <otherwise>
+                 ORDER BY create_time DESC
+            </otherwise>
+        </choose>
+        limit #{start},#{length}
+    </select>
+
+    <insert id="save">
+            insert into t_user(uname,upass,zjm,phone,mail,truename,sex,age,create_time,
+            create_uid,update_time,update_uid,delete_flag,yl1,yl2,yl3,yl4)
+            values(#{uname},#{upass},#{zjm},#{phone},#{mail},#{truename},#{sex},#{age},#{create_time},
+                   #{create_uid},now(),#{update_uid},#{delete_flag},#{yl1},#{yl2},#{yl3},#{yl4})</insert>
+
+    <select id="findAll" resultType="com.example.bs.entity.User">
+        select
+        <include refid="UserInfoColumns"></include>
+        <include refid="column"></include>
+        from t_user u
+        <where>
+            u.delete_flag='1'
+        </where>
+    </select>
+
+
+</mapper>

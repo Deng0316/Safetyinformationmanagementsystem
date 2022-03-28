@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+<!--controller包中的类处理请求-->
+    <context:component-scan base-package="com.example.bs.controller"></context:component-scan>
+<!--开启请求与响应的注解编程-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+<!--用来处理静态资源 比如html jpg js 等    -->
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+
+</beans>

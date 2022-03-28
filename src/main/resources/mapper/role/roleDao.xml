@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bs.dao.RoleDao">
+    <sql id="InfoColumns">
+        r.rid,r.rname,r.description,r.create_time,r.create_uid,r.update_time,r.update_uid,r.delete_flag,r.yl1,r.yl2
+    </sql>
+
+    <sql id="Columns">
+        <where>
+            r.delete_flag = 1
+            <if test="rname != null and rname !='' ">
+                AND r.rname like CONCAT(#{rname},'%')
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from t_role r
+        <include refid="Columns"></include>
+    </select>
+
+    <select id="list" resultType="com.example.bs.entity.Role">
+        select
+        <include refid="InfoColumns"/>
+        ,cu.uname as create_uname,uu.uname as update_uname
+        from t_role r left join t_user cu on cu.uid = r.create_uid
+                      left join t_user uu on uu.uid = r.update_uid
+        <include refid="Columns"></include>
+        <choose>
+            <when test="update_time != null and update_time != ''">
+                ORDER BY update_time DESC
+            </when>
+            <otherwise>
+                ORDER BY create_time DESC
+            </otherwise>
+        </choose>
+        limit #{start},#{length}
+    </select>
+
+    <insert id="save" >
+        insert into t_role(rid,rname,description,create_time,create_uid,delete_flag,yl1,yl2)
+        values (#{rid},#{rname},#{description},now(),#{create_uid},1,#{yl1},#{yl2})
+    </insert>
+
+    <select id="findById" resultType="com.example.bs.entity.Role">
+        select
+        <include refid="InfoColumns"/>
+        from t_role r
+        <where>
+            r.rid = #{rid}
+        </where>
+    </select>
+
+
+
+
+
+</mapper>

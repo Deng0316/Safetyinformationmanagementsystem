@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bs.dao.FunDao">
+    <sql id="InfoColumns">
+        f.fid,f.fname,f.ftype,f.furl,f.pid,f.auth_flag,f.create_time,f.create_uid,
+        f.update_time,f.update_uid,f.delete_flag,f.yl1,f.yl2,f.yl3,f.yl4
+    </sql>
+
+    <select id="findAll" resultType="com.example.bs.entity.Fun">
+        select
+        <include refid="InfoColumns"></include>,
+        cu.uname create_uname,uu.uname update_uname,ifnull(pf.fname,'主菜单') pname
+        from
+        t_fun f inner join t_user cu on f.create_uid = cu.uid
+        left join t_user uu on f.update_uid = uu.uid
+        left join t_fun pf on f.pid = pf.fid
+        <where>
+        f.delete_flag = 1
+        </where>
+        order by fid;
+    </select>
+
+    <select id="findById" resultType="com.example.bs.entity.Fun">
+        select f.fid,f.fname,f.ftype,f.furl,f.pid,f.auth_flag,f.create_time,f.create_uid,
+               f.update_time,f.update_uid,f.delete_flag,f.yl1,f.yl2,f.yl3,f.yl4,
+               ifnull(pf.fname,'主菜单') pname from
+            t_fun f left join t_fun pf on f.pid = pf.fid
+        where f.delete_flag = 1 and f.fid=1
+    </select>
+</mapper>

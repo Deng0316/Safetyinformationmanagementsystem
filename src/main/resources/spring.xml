@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+<!--开启IOC注解编程-->
+    <context:component-scan base-package="com.example.bs"></context:component-scan>
+<!--开启AOP注解编程-->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+<!--管理数据源-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close"
+          p:driverClassName="${mysql.driver}"
+          p:url="${mysql.url}"
+          p:username="${mysql.user}"
+          p:password="${mysql.password}"
+          p:maxActive="${mysql.maxActive}"
+          p:maxIdle="${mysql.maxIdle}"
+          p:minIdle="${mysql.minIdle}"
+          p:maxWait="${mysql.maxWait}"
+    >
+    </bean>
+<!--管理工厂-->
+    <bean name="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:mapperLocations="classpath:mapper/**/*.xml"
+    >
+    </bean>
+    <bean name="mapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:sqlSessionFactoryBeanName="sessionFactory"
+          p:basePackage="com.example.bs.dao">
+    </bean>
+<!-- 配置文件解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1048576"></property>
+    </bean>
+<!--管理事务-->
+    <bean id="manager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource">
+    </bean>
+<!--事务开启注解编程 -->
+    <tx:annotation-driven transaction-manager="manager"></tx:annotation-driven>
+</beans>
