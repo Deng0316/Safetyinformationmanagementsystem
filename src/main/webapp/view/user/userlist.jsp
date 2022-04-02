@@ -3,9 +3,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <base href="<%=request.getContextPath()%>/"/>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/layui/css/layui.css"/>
     <script src="<%=request.getContextPath()%>/layui/layui.js"></script>
+    <script src="js/user.js"></script>
     <style>
+        /*.distribution-box.layui-form-checkbox[lay-skin=primary] i{top:6px}*/
         .layui-table{margin:0;}
         fieldset{padding:10px;border:0;border-top:1px solid #ddd;margin:10px;}
         fieldset legend{font-size:14px;}
@@ -63,16 +66,16 @@
             <colgroup>
                 <col width="4%">
                 <col width="5%">
-                <col width="8%">
-                <col width="15%">
-                <col width="8%">
+                <col width="6%">
                 <col width="8%">
                 <col width="8%">
                 <col width="8%">
-                <col width="10%">
+                <col width="6%">
                 <col width="8%">
                 <col width="10%">
-                <col width="19%">
+                <col width="8%">
+                <col width="10%">
+                <col width="26%">
             </colgroup>
             <thead>
             <tr>
@@ -97,16 +100,16 @@
             <colgroup>
                 <col width="4%">
                 <col width="5%">
+                <col width="6%">
+                <col width="5%">
                 <col width="8%">
                 <col width="8%">
-                <col width="8%">
-                <col width="8%">
-                <col width="8%">
-                <col width="8%">
-                <col width="10%">
+                <col width="6%">
                 <col width="8%">
                 <col width="10%">
-                <col width="19%">
+                <col width="8%">
+                <col width="10%">
+                <col width="26%">
             </colgroup>
             <tbody>
                 <c:forEach items="${requestScope.vo.data}" var="user" varStatus="i">
@@ -130,6 +133,9 @@
                      <button onclick="toDelete('${user.uid}')" class="layui-btn layui-btn-primary layui-border-red    layui-btn-xs">
                         <i class="layui-icon">&#xe640;</i>    删除
                      </button>
+                    <button onclick="toDistributionRoles('${user.uid}')" class="layui-btn layui-btn-primary layui-border-blue    layui-btn-xs">
+                        <i class="layui-icon">&#xe640;</i>    分配角色
+                    </button>
                     </td>
                 </tr>
                 </c:forEach>
@@ -234,5 +240,12 @@
             }
         });
     }
+</script>
+<script type="text/html" id="yl1"style="">
+    {{# if(d.yl1==1){}}
+    <span class="layui-badge layui-bg-green" style="margin-top: 5px" >启用</span>
+    {{# }else{}}
+    <span class="layui-badge" style="margin-top: 5px">禁用</span>
+    {{# }}}
 </script>
 </html>
