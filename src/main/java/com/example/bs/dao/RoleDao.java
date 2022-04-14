@@ -26,6 +26,4 @@ public interface RoleDao {
     List<Map> findAllByUser(Long uid);
 
 
-
-
 }

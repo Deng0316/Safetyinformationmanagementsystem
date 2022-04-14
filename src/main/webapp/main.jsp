@@ -38,14 +38,14 @@
      
      
           <div class="layui-side-scroll">
-          <ul class="layui-nav layui-nav-tree"   lay-shrink="all" lay-filter="layadmin-system-side-menu" >
+          <ul id="menuBox" class="layui-nav layui-nav-tree"   lay-shrink="all" lay-filter="layadmin-system-side-menu" >
             <li class="layui-nav-item">
               <a href="home.jsp" target="content" class="layui-this">
                 <i class="layui-icon layui-icon-home"></i>
                 <cite>主页</cite>
               </a>
             </li>
-            
+
             <li class="layui-nav-item">
               <a href="javascript:;" lay-direction="2">
                 <i class="layui-icon layui-icon-user"></i>
@@ -63,14 +63,14 @@
                 </dd>
               </dl>
             </li>
-			
+
 			<li  class="layui-nav-item">
               <a href="javascript:;" >
                 <i class="layui-icon layui-icon-list"></i>
                 <cite>数据中心</cite>
               </a>
             </li>
-			
+
 			<li class="layui-nav-item">
               <a href="javascript:;">
                 <i class="layui-icon layui-icon-template-1"></i>
@@ -85,7 +85,7 @@
                 </dd>
               </dl>
             </li>
-  
+
             <li class="layui-nav-item">
               <a href="javascript:;">
                 <i class="layui-icon layui-icon-app"></i>
@@ -100,7 +100,7 @@
                 </dd>
               </dl>
             </li>
-			
+
 			<li class="layui-nav-item">
               <a href="javascript:;">
                 <i class="layui-icon layui-icon-template"></i>
@@ -115,7 +115,9 @@
                 </dd>
               </dl>
             </li>
-			
+
+
+
           </ul>
 		  </div>
 
@@ -142,6 +144,62 @@
                 location.href='exit';
             }
         }
+
+        <%--layui.use(['jquery','element'],function (){--%>
+        <%--    var $ = layui.$--%>
+        <%--    var element = layui.element;--%>
+        <%--    $.ajax({--%>
+        <%--        url:'<%=request.getContextPath()%>/auth/authMenus',--%>
+        <%--        dataType:'json',--%>
+        <%--        true:'post',--%>
+        <%--        success:function (menus){--%>
+        <%--            showRootMenu(menus);--%>
+        <%--            element.init();--%>
+        <%--        }--%>
+        <%--    })--%>
+        <%--    function showRootMenu(menus){--%>
+        <%--        var $ul = $('#menuBox');--%>
+        <%--        for(var i=0;i<menus.length;i++){--%>
+        <%--            var rootMenu = menus[i];--%>
+        <%--            //每一个根菜单都是一个li,这是li标签的处理--%>
+        <%--            var $li = $('<li class="layui-nav-item"></li>');--%>
+        <%--            //然后是a标签的处理--%>
+        <%--            var hrefStr=''--%>
+        <%--            if(rootMenu.furl && rootMenu.furl!=''){--%>
+        <%--                hrefStr = 'href="<%=request.getContextPath()%>/'+rootMenu.furl+'"';--%>
+        <%--            }--%>
+        <%--            var $a = $('<a '+hrefStr+' target="content" ><i class="layui-icon layui-icon-home"></i><cite>'+rootMenu.fname+'</cite></a>')--%>
+
+        <%--            $li.append($a);--%>
+        <%--            $ul.append($li);--%>
+        <%--            var children = rootMenu.children;--%>
+        <%--            if(children && children.length>0){--%>
+        <%--                //有子菜单--%>
+        <%--                showChildMenu(children,$a)--%>
+        <%--            }--%>
+        <%--        }--%>
+        <%--    }--%>
+        <%--    //将子菜单展示在指定的目标下面--%>
+        <%--    function showChildMenu(children,$target){--%>
+        <%--        var $dl = $('<dl class="layui-nav-child"></dl>')--%>
+        <%--        $target.after($dl);--%>
+        <%--        for(var i=0;i<children.length;i++) {--%>
+        <%--            var menu = children[i]--%>
+        <%--            var $dd = $('<dd></dd>');--%>
+        <%--            var hrefStr = '';--%>
+        <%--            if (menu.furl && menu.furl != '') {--%>
+        <%--                hrefStr = 'href="<%=request.getContextPath()%>/' + menu.furl + '"';--%>
+        <%--            }--%>
+        <%--            var $a = $('<a ' + hrefStr + ' target="content" ><i class="layui-icon layui-icon-home"></i><cite>' + menu.fname + '</cite></a>')--%>
+        <%--            $dd.append($a);--%>
+        <%--            $dl.append($dd);--%>
+        <%--            var Children = menu.children;--%>
+        <%--            if (Children && Children.length > 0) {--%>
+        <%--                showChildMenu(Children, $a)--%>
+        <%--            }--%>
+        <%--        }--%>
+        <%--    }--%>
+        <%--});--%>
     </script>
 	<script>
 		layui.use('element', function(){
@@ -151,55 +209,7 @@
 			});
 		});
 	</script>
-    <script>
-        data1 = [{
-            title: '功能1'
-            ,id: 1
-            ,children: [{
-                title: '<a href="list1.jsp" target="content">功能11</a>'
-                ,id: 1000
-            },{
-                title: '<a href="list2.jsp" target="content">功能12</a>'
-                ,id: 1001
-            },{
-                title: '<a href="treeList.jsp" target="content">功能13</a>'
-                ,id: 1002
-            }]
-        },{
-            title: '功能2'
-            ,id: 2
-            ,children: [{
-                title: '功能21'
-                ,id: 2000
-            },{
-                title: '功能22'
-                ,id: 2001
-            },{
-                title: '功能23'
-                ,id: 2002
-            }]
-        },{
-            title: '功能3'
-            ,id: 3
-            ,children: [{
-                title: '功能31'
-                ,id: 3000
-            },{
-                title: '功能32'
-                ,id: 3001
-            }]
-        }];
 
-        layui.use(['tree','jquery'],function(){
-            var tree = layui.tree ;
-            var $ = layui.$ ;
-           
-            tree.render({
-                elem: '#test1' 
-                ,data: data1   
-            });
-        })
-    </script>
     
     </body>
 </html>

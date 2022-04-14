@@ -24,7 +24,7 @@
                 <input type="hidden" name="fid"/>
                 <div class="layui-form-item abe">
                     <label class=" layui-icon layui-icon-username" for="fun-add-fname"></label>
-                    <input type="text" name="fname" id="fun-add-fname" lay-verify="required" placeholder="角色名称" class="layui-input">
+                    <input type="text" name="fname" id="fun-add-fname" lay-verify="required" placeholder="功能名称" class="layui-input">
 <%--                </div>--%>
 <%--                <div class="layui-form-item abe">--%>
                     <label class=" layui-icon layui-icon-app" for="fun-add-ftype" style="z-index: 9999"></label>

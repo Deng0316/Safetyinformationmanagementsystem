@@ -1,6 +1,7 @@
 package com.example.bs.filter;
 
 import com.example.bs.entity.User;
+import com.example.bs.util.AutoLoginUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,6 +23,12 @@ public class LoginFilter extends HttpFilter {
             //如果验证通过，将这次请求放过去
             chain.doFilter(request,response);
         }else{
+            //可以自动登录
+            if(AutoLoginUtil.isAutoLogin(request,response)){
+                chain.doFilter(request,response);
+                return;
+            }
+            //不能自动登录
             //验证未通过，给出提示，重新登录
             request.getRequestDispatcher("").forward(request,response);
         }

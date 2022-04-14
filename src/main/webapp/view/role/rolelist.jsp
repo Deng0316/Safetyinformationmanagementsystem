@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="<%=request.getContextPath()%>/layui/css/layui.css"/>
     <script src="<%=request.getContextPath()%>/layui/layui.js"></script>
+<%--    <script src="<json/treeData.js"></script>--%>
+    <script src="<%=request.getContextPath()%>/treetable-lay/treeTable.js"></script>
     <style>
         .layui-table{margin:0;}
         .layui-form-checkbox[lay-skin=primary] i{top:6px;}
@@ -24,6 +26,9 @@
 <script type="text/html" id="dataBtns">
     <button  class="layui-btn layui-btn-primary layui-border-orange  layui-btn-xs" lay-event="toEdit">
         <i class="layui-icon">&#xe642;</i>    编辑
+    </button>
+    <button  class="layui-btn layui-btn-primary layui-border-blue  layui-btn-xs" lay-event="toDistribution">
+        <i class="layui-icon layui-icon-set"></i>    分配功能
     </button>
 </script>
 
@@ -65,18 +70,18 @@
 </body>
 
 
-<script src="<%=request.getContextPath()%>/layui/layui.js"></script>
 <%--<script src="<%=request.getContextPath()%>/json/data2.js"></script>--%>
 
 <script>
     // var data2;
     // var rname = document.getElementById("rname");
     // var phone = document.getElementById("phone");
-    layui.use(['table','jquery','form','layer'],function(){
+    layui.use(['table','jquery','form','layer','treeTable'],function(){
         var table = layui.table;
         var $ = layui.$ ;
         var form = layui.form;
         var layer = layui.layer;
+        var treeTable = layui.treeTable;
         <%--$.ajax({--%>
         <%--    type:"post",--%>
         <%--    url:"${pageContext.request.contextPath}/role/list",--%>
@@ -106,9 +111,9 @@
                 {title:'创建时间',width:'12%',field:'create_time',templet: function (d){return layui.util.toDateString(d.create_time,'yyyy-MM-dd');}},
                 {title:'创建人',width:'12%',field:'create_uname'},
                 {title:'修改时间',width:'12%',field:'update_time',templet: function (d){return layui.util.toDateString(d.create_time,'yyyy-MM-dd');}},
-                {title:'修改人',width:'12%',field:'update_uname'},
-                {title:'角色状态',width:'11%',field:'yl1',templet: '#yl1',align:'center'},
-                {width:'10%',templet:'#dataBtns',title:'操作',align:'center'}
+                {title:'修改人',width:'10%',field:'update_uname'},
+                {title:'角色状态',width:'7%',field:'yl1',templet: '#yl1',align:'center'},
+                {width:'16%',templet:'#dataBtns',title:'操作',align:'center'}
             ]] //设置表头
             ,url:'${pageContext.request.contextPath}/role/list'
             ,page:{
@@ -199,6 +204,7 @@
         table.on('tool(roleList)',function (obj){
             switch (obj.event){
                 case "toEdit":toEdit(obj.data.rid);break;
+                case "toDistribution":toDistribution(obj.data.rid);break;
             }
         })
 
@@ -259,6 +265,7 @@
         }
 
         function toImport(){
+
             $.post('import.jsp', null, function (data) {
                 layer.open({
                     title:'角色导入',
@@ -274,6 +281,97 @@
                 })
             })
         }
+
+        function toDistribution(rid){
+            var role;
+            var funs;
+            var view;
+            var tt;
+            $.ajax({
+                async:false,
+                url:'<%=request.getContextPath()%>/auth/distributionInfoForFun',
+                type:'post',
+                data:{'rid':rid},
+                dataType:'json',
+                success:function (obj){
+                    role = obj.role;
+                    funs = obj.funs;
+                }
+            })
+            $.ajax({
+                async: false,
+                url:'<%=request.getContextPath()%>/view/role/distribution.jsp',
+                type:'get',
+                success:function ($view) {
+                    view = $view;
+                }
+            })
+            layer.open({
+                title:'分配功能',
+                type:1,
+                area:[800,500],
+                content:view,
+                btn:['确定分配','取消'],
+                yes:function (){
+                    distributionSubmit()
+                },
+                success:function () {
+                    funTableInit();
+                }
+            });
+            $('#distribution_rno').val(role.rid);
+            $('#distribution_rname').val(role.rname);
+
+            function funTableInit(){
+
+
+                tt = treeTable.render({
+                    elem:'#funGrid',
+                    height:'300',
+                    data:funs,
+                    cols:[[
+                        {type:'checkbox',width:'10%'},
+                        {title:'编号',field:'fid',width:'10%'},
+                        {title:'名称',field:'fname',width:'60%'},
+                        {title:'类别',field:'ftype',templet:'#ftypeColumn',width:'10%'}
+                    ]],
+                    tree:{
+                        isPidData:true,
+                        idName:'fid',
+                        pidName:'pid',
+                        iconIndex: 2,
+                    }
+                });
+
+            }
+
+            function distributionSubmit(){
+                var rows = tt.checkStatus();
+                var fidStr = '';
+                for(var i=0;i<rows.length;i++){
+                    var row = rows[i];
+                    fidStr+=row.fid+',';
+                }
+                $.ajax({
+                    url:'<%=request.getContextPath()%>/auth/distributionFun',
+                    data:{
+                        'rid':rid,
+                        'fidStr':fidStr
+                    },
+                    success:function (responseVO){
+                    var code = responseVO.code;
+                    var msg = responseVO.msg;
+                    if(code==0){
+                        layer.alert(msg,{icon:6},function (){
+                            layer.closeAll();
+                        });
+                    }else {
+                        layer.alert(msg,{icon:5});
+                    }
+                }})
+            }
+        }
+
     });
 </script>
 <script type="text/html" id="yl1"style="">
@@ -283,5 +381,7 @@
     <span class="layui-badge" style="margin-top: 5px">禁用</span>
     {{# }}}
 </script>
+
+
 
 </html>

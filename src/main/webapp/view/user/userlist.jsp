@@ -47,9 +47,11 @@
                 <i class="layui-icon">&#xe615;</i>    批量删除
             </button>
 
-            <a href="<%=request.getContextPath()%>/view/user/add.jsp" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm">
-                <i class="layui-icon">&#xe61f;</i>    新建
-            </a>
+            <c:if test="${sessionScope.menuAuthFlags.contains('com:example:bs:user.add')}">
+                <a href="<%=request.getContextPath()%>/view/user/add.jsp" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm">
+                    <i class="layui-icon">&#xe61f;</i>    新建
+                </a>
+            </c:if>
 
             <a href="<%=request.getContextPath()%>/view/user/import.jsp" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm">
                 <i class="layui-icon">&#xe681;</i>    导入

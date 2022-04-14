@@ -70,7 +70,7 @@
         var tt = treeTable.render({
             elem:'#treeList',
             url:'fun/list',//请求远程数据
-            data:treeData,
+            // data:treeData,
             toolbar:'#toolbarBtn',
             tree:{
                 iconIndex: 2, //指定展开合并图标出现在哪一列
@@ -120,81 +120,82 @@
             var layer = layui.layer;
             var $ = layui.$ ;
             var form = layui.form ;
-            // $.post('fun/edit',{fid:fid},function (funs){
-            //     $.post('view/fun/funadd.jsp', null, function (data) {
-            //         layer.open({
-            //             title: '功能编辑',
-            //             type: '1',
-            //             content: data,
-            //             area: [400, 500],
-            //             success: function () {
-            //                 form.val('funAddForm',funs);
-            //                 form.render();
-            //             },
-            //             btn: ['确定', '取消'],
-            //             yes: function () {
-            //                 $('#ListAction').click();
-            //             },
-            //             btn2: function () {
-            //                 alert('取消');
-            //             }
-            //         });
-            //     });
-            // },'json')
-            $.ajax({
-                async: true,
-                url:'fun/edit',
-                type:'post',
-                data:{
-                    'fid':fid
-                },
-                dataType:'json',
-                success:function(funs){
-                    $.ajax({
-                        async:true,
-                        url:'view/fun/funadd.jsp',
-                        success:function (data){
-                            layer.open({
-                                area: [400, 450],
-                                type: 1,
-                                title: '功能编辑',
-                                content: data,
-                                success:function (){
-                                    form.val('funAddForm',funs);
-                                    form.render();
-                                },
-                                btn: ['保存', '取消'],
-                                yes: function () {
-                                    $('#ListAction').click();
-                                },
-                                btn2:function (){
-                                    form.render();
-                                }
-                            })
-                            form.on('submit(1)',function(data){
-                                //data.field装载了表单中的组件数据，可以参考文档
-                                //自定义ajax异步请求
-                                $.post('fun/update',data,function(responseVO){
-                                    var code = responseVO.code ;
-                                    var msg = responseVO.msg ;
-                                    if(code == 0){
-                                        layer.alert(msg,{icon:6},function(){
-                                            //点击提示框的确定按钮
-                                            layer.closeAll();
-                                            treeTable.reload('treeList');
-                                        })
-                                    }else{
-                                        layer.alert(msg,{icon:5});
-                                        treeTable.reload('treeList');
-                                    }
-                                },'json');
-                                //终止表单提交 （默认是同步的）
-                                return false ;
-                            });
+            $.post('fun/edit',{fid:fid},function (funs){
+                $.post('view/fun/funadd.jsp', null, function (data) {
+                    layer.open({
+                        area: [400, 450],
+                        type: 1,
+                        title: '功能编辑',
+                        content: data,
+                        success:function (){
+                            form.val('funAddForm',funs);
+                            form.render();
+                        },
+                        btn: ['保存', '取消'],
+                        yes: function () {
+                            $('#ListAction').click();
+                        },
+                        btn2:function (){
+                            form.render();
                         }
                     })
-                }
-            })
+                });
+            },'json')
+            // $.ajax({
+            //     async: true,
+            //     url:'fun/edit',
+            //     type:'post',
+            //     data:{
+            //         'fid':fid
+            //     },
+            //     dataType:'json',
+            //     success:function(funs){
+            //         $.ajax({
+            //             async:true,
+            //             url:'view/fun/funadd.jsp',
+            //             success:function (data){
+            //                 layer.open({
+            //                     area: [400, 450],
+            //                     type: 1,
+            //                     title: '功能编辑',
+            //                     content: data,
+            //                     success:function (){
+            //                         form.val('funAddForm',funs);
+            //                         form.render();
+            //                     },
+            //                     btn: ['保存', '取消'],
+            //                     yes: function () {
+            //                         $('#ListAction').click();
+            //                     },
+            //                     btn2:function (){
+            //                         form.render();
+            //                     }
+            //                 })
+            //
+            //             }
+            //         })
+            //     }
+            // })
+            form.on('submit(1)',function(data){
+                //data.field装载了表单中的组件数据，可以参考文档
+                //自定义ajax异步请求
+                $.post('fun/update',data,function(responseVO){
+                    var code = responseVO.code ;
+                    var msg = responseVO.msg ;
+                    if(code == 0){
+                        layer.alert(msg,{icon:6},function(){
+                            //点击提示框的确定按钮
+                            layer.closeAll();
+                            treeTable.reload('treeList');
+                        })
+                    }else{
+                        layer.alert(msg,{icon:5});
+                        treeTable.reload('treeList');
+                    }
+                },'json');
+                //终止表单提交 （默认是同步的）
+                return false ;
+            });
         })
     }
 

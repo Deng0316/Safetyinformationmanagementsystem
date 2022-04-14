@@ -39,8 +39,8 @@
 						<div class="title">年度新增学生信息</div>
 						<div class="result"><span class="layui-badge">120</span></div>
 					</div>
-					
-					
+
+
 				</div>
 			  </div>
 			  <div class="layui-col-md3">
@@ -55,53 +55,45 @@
 				<div class="layui-block1">
 					<div class="layui-panel">
 						<div class="title">时间</div>
-						<div class="result" style="font-weight:bold;font-size:16px;">2022-02-28 星期一</div>
+						<div class="result" style="font-weight:bold;font-size:16px;"></div>
 					</div>
 				</div>
 			  </div>
 			</div>
 
-			<div class="layui-row" style="margin-top:20px;">
-				<div class="layui-card">
-					<div class="layui-card-header"><b>任务提醒</b><span class="layui-badge" style="left:5px;">10+</span></div>
-					<div class="layui-card-body" style="height:200px;overflow: auto">
-						<table class="layui-table">
-							<colgroup>
-								<col width="10%">
-								<col width="90%">
-							</colgroup>
-							<thead>
-							<tr>
-								<th>序号</th>
-								<th>内容</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td>1</td>
-								<td>考试公告</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>后勤信息动态</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>新增学生情况</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-
-			<div class="layui-row" style="margin-top:20px;">
-				<div class="layui-col-md12">
-					<div class="layui-panel">
-						<div id="ech1" style="height:300px;background-color: #fff;"></div>
-					</div>
-				</div>
-			</div>
+<%--			<div class="layui-row" style="margin-top:20px;">--%>
+<%--				<div class="layui-card">--%>
+<%--					<div class="layui-card-header"><b>任务提醒</b><span class="layui-badge" style="left:5px;">10+</span></div>--%>
+<%--					<div class="layui-card-body" style="height:200px;overflow: auto">--%>
+<%--						<table class="layui-table">--%>
+<%--							<colgroup>--%>
+<%--								<col width="10%">--%>
+<%--								<col width="90%">--%>
+<%--							</colgroup>--%>
+<%--							<thead>--%>
+<%--							<tr>--%>
+<%--								<th>序号</th>--%>
+<%--								<th>内容</th>--%>
+<%--							</tr>--%>
+<%--							</thead>--%>
+<%--							<tbody>--%>
+<%--							<tr>--%>
+<%--								<td>1</td>--%>
+<%--								<td>考试公告</td>--%>
+<%--							</tr>--%>
+<%--							<tr>--%>
+<%--								<td>2</td>--%>
+<%--								<td>后勤信息动态</td>--%>
+<%--							</tr>--%>
+<%--							<tr>--%>
+<%--								<td>3</td>--%>
+<%--								<td>新增学生情况</td>--%>
+<%--							</tr>--%>
+<%--							</tbody>--%>
+<%--						</table>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
 
 			<div class="layui-row layui-col-space15" style="margin-top:20px;">
 				<div class="layui-col-md8">
@@ -123,42 +115,6 @@
 
 <script src="echarts/dist/echarts.min.js"></script>
 <script>
-	var chartDom = document.getElementById('ech1');
-	var myChart = echarts.init(chartDom);
-	var option;
-
-	option = {
-		title:{
-			text:'7日内的数据变化情况',
-			// subtext:'',
-			x: 'center',
-			y: '17px',
-			textStyle: {
-				color: '#3A7BD5',
-				fontSize: 16
-			}
-		},
-		tooltip: {
-			trigger: 'none',
-			axisPointer: {
-				type: 'cross'
-			}
-		},
-		xAxis: {
-			type: 'category',
-			data: ['08-01', '08-02', '08-03', '08-04', '08-05', '08-06', '08-07']
-		},
-		yAxis: {
-			type: 'value'
-		},
-		series: [{
-			data: [500, 730, 424, 618, 535, 847, 560],
-			type: 'line'
-		}]
-	};
-
-	option && myChart.setOption(option);
-
 	//-----------------------------------------
 
 	var chartDom2 = document.getElementById('ech2');
@@ -167,7 +123,7 @@
 
 	option2 = {
 		title:{
-			text:'7日各系人数统计',
+			text:'各系人数统计',
 			// subtext:'',
 			x: 'center',
 			y: '17px',
@@ -203,7 +159,7 @@
 	var option3;
 	option3 = {
 		title: {
-			text: '7日内数据统计',
+			text: '数据统计',
 			x:'center',
 			y:'17px',
 			textStyle: {
@@ -243,4 +199,15 @@
 	};
 
 	option3 && myChart3.setOption(option3);
+</script>
+<script>
+	layui.use('laydate',function (){
+		var laydate = layui.laydate
+
+		laydate.render({
+			elem: '#fillDate',
+			value:new Date(),
+			isInitValue: true
+		});
+	})
 </script>

@@ -1,3 +1,6 @@
+
+
+
 function toDistributionRoles(uid){
     var rids = [];
     layui.use(['layer','table','jquery'],function (){
